@@ -1,0 +1,41 @@
+﻿@model TasksListViewModel
+@{
+    ViewData["Title"] = "Tasks list";
+}
+<div class="tasks-page">
+
+    <div class="text-center">
+        <h1 class="display-4">Tasks list</h1>
+    </div>
+
+    <div class="tasks-list">
+        @foreach (var task in Model.Items)
+        {
+            <div class="task-line-item row">
+                <div class="name col-md-4">
+                    @task.Name
+                </div>
+                <div class="priority  col-md-2">
+                    @task.Priority
+                </div>
+                <div class="status col-md-2">                    
+                    @Model.AvailableStatusses.Single(st => st.Value == task.StatusCode).Text
+                </div>
+                <div class="options col-md-3">
+                    <a asp-controller="Tasks" asp-action="Edit" asp-route-name="@task.Name" class="btn btn-primary">Edit</a>
+                    @if (task.StatusCode == "Completed") { //TODO: use reference data
+                <form asp-action="Delete" style="display:inline-block">
+                    <input name="Name" value="@task.Name" type="hidden" />
+                    <input type="submit" value="Delete" class="btn btn-primary" />
+                </form> 
+                    }
+                </div>
+            </div>
+            <br>
+        }
+    </div>
+    <hr/>
+    <div class="create-task">
+        <a asp-controller="Tasks" asp-action="Create">Create new task</a>
+    </div>
+</div>
